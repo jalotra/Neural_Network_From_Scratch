@@ -2,6 +2,7 @@ from ctypes import *
 import math
 import random
 import os
+import sys
 
 test_photos_directory = "test_photos/"
 
