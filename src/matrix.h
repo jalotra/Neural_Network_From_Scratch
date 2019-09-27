@@ -32,7 +32,8 @@ matrix make_translation_matrix(float dx, float dy);          // Creates a transl
 double mag_matrix(matrix originalMatrix);             // Returns the sqrt of sum of all the values
 double *sle_solve(matrix A, double *b);
 
-matrix matrix_mult_matrix(matrix A, matrix B);        // Multiplies two matrices 
+matrix matrix_mult_matrix(matrix A, matrix B);        // Multiplies two matrices
+matrix matrix_elmult_matrix(matrix a, matrix b); 
 
 
 
