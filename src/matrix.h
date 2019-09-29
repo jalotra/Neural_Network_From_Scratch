@@ -2,7 +2,7 @@
 #define MATRIX_H
 
 // Macros for for loops
-#define for_loop(x, n) for(int x = 0; x < n; ++i)
+#define for_loop(x, n) for(int x = 0; x < n; ++x)
 
 // Data Structure for matrix representation
 typedef struct matrix{
@@ -28,6 +28,7 @@ typedef struct LUP
 matrix make_matrix(int rows, int cols);
 matrix copy_matrix(matrix originalMatrix);
 void print_matrix(matrix originalMatrix);
+void free_matrix(matrix m);
 
 // Neural Netwok spefic methods
 matrix make_identity(int rows, int cols);
@@ -44,6 +45,7 @@ matrix matrix_invert(matrix m);
 matrix random_matrix(int rows, int cols, double s);
 matrix transpose_matrix(matrix m);
 matrix axpy_matrix(double a, matrix x, matrix y);
+matrix augment_matrix(matrix m);
 
 
 // test matrix 
