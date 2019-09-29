@@ -3,7 +3,7 @@ OPENCV=0
 OPENMP=0
 DEBUG=0
 
-OBJ=load_image.o process_image.o args.o 
+OBJ=load_image.o process_image.o args.o matrix.o classifier.o
 EXOBJ=test.o
 
 VPATH=./src/:./
