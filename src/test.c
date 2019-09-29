@@ -3,6 +3,7 @@
 #include "image.h"
 #include "test.h"
 #include "args.h"
+#include "matrix.h"
 
 int do_test()
 {
@@ -13,5 +14,7 @@ int do_test()
 
 int main(int argc, char **argv)
 {
+	do_test();
+	test_matrix();
     return 0;
 }
