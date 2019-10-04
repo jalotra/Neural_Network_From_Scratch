@@ -62,7 +62,11 @@ void print_matrix(matrix originalMatrix)
 }
 void free_matrix(matrix m)
 {
-	free(m.data);
+	if (m.data) {
+        int i;
+        if (!m.shallow) for(i = 0; i < m.rows; ++i) free(m.data[i]);
+        free(m.data);
+    }
 }
 
 // Important methods
