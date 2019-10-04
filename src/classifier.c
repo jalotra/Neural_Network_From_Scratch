@@ -162,21 +162,48 @@ matrix backward_layer(layer *l, matrix delta)
     // 1.4.1
     // delta is dL/dy
     // TODO: modify it in place to be dL/d(xw)
+    // dL/d(xw) = dL/dy * dy/d(xw)
+         // = dL/dy * df(xw)/d(xw)
+         // = dL/dy * f'(xw)
+
+	matrix in = make_matrix(l->in.rows, l->in.cols);
+	matrix w = make_matrix(l->w.rows, l->w.cols);
+
+	matrix mult = matrix_mult_matrix(in, w); 
+	gradient_matrix(mult, l->activation, delta);
+
 
 
     // 1.4.2
+    // DERIVATIVE WITH RESPECT TO WEIGHTS
     // TODO: then calculate dL/dw and save it in l->dw
     free_matrix(l->dw);
     matrix dw = make_matrix(l->w.rows, l->w.cols); // replace this
+    // dL/dw = dL/d(xw) * d(xw)/dw
+     //  = dL/d(xw) * x
+    // Take transpose of the input layer and multiply it with the dl/d(x*w)
+    in = transpose_matrix(in);
+    dw = matrix_mult_matrix(in, mult);
     l->dw = dw;
 
     
     // 1.4.3
     // TODO: finally, calculate dL/dx and return it.
     matrix dx = make_matrix(l->in.rows, l->in.cols); // replace this
+    w = transpose_matrix(w);
+    dx = matrix_mult_matrix(mult, dx);
+
+
+    // Free Up unused Matrices
+    free_matrix(in);
+    free_matrix(w);
+    free_matrix(mult);
 
     return dx;
 }
+
+
+
 
 // Update the weights at layer l
 // layer *l: pointer to the layer
@@ -196,6 +223,8 @@ void update_layer(layer *l, double rate, double momentum, double decay)
     // Remember to free any intermediate results to avoid memory leaks
 
 }
+
+
 
 // Make a new layer for our model
 // int input: number of inputs to the layer

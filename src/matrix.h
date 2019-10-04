@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-// Macros for for loops
+// Macros for for loops 
 #define for_loop(x, n) for(int x = 0; x < n; ++x)
 
 // Data Structure for matrix representation
