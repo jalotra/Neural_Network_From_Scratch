@@ -1,5 +1,6 @@
 #ifndef CLASSIFIER_H
 #define CLASSIFIER_H
+#include "matrix.h"
 
 // Some data structures needed by a nueral net
 
@@ -21,8 +22,8 @@ typedef struct
 
 // Represents the data coming in and going out
 typedef struct{
-	matrix X;
-	matrix y;
+	matrix X;         // X represents the input to any layer
+	matrix y;         // y represents the inference of any layer
 }data;
 
 
