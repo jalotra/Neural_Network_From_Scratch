@@ -18,6 +18,14 @@ typedef struct
 	ACTIVATION activation;  // Activation function used by this layer
 }layer;
 
+
+// Represents the data coming in and going out
+typedef struct{
+	matrix X;
+	matrix y;
+}data;
+
+
 typedef struct
 {
 	layer *layers;       // Pointer to layers struct
