@@ -69,6 +69,42 @@ void free_matrix(matrix m)
     }
 }
 
+matrix matrix_sub_matrix(matrix a, matrix b)
+{
+    // Matrix will be possible only if the dimensions match up
+    assert(a.rows == b.rows);
+    assert(a.cols == b.cols);
+
+    matrix m = make_matrix(a.rows, a.cols);
+    for_loop(i, a.rows)
+    {
+        int j ;
+        for_loop(j, a.cols)
+        {
+            m.data[i][j] = a.data[i][j] - b.data[i][j];
+        }
+    }
+
+    return m;
+}
+matrix matrix_add_matrix(matrix a, matrix b)
+{
+    // Matrix will be possible only if the dimensions match up
+    assert(a.rows == b.rows);
+    assert(b.cols == a.cols);
+
+    matrix m = make_matrix(a.rows, a.cols);
+    for_loop(i, a.rows)
+    {
+        int j ;
+        for_loop(j, a.cols)
+        {
+            m.data[i][j] = a.data[i][j] + b.data[i][j];
+        }
+    }
+
+    return m;
+}
 // Important methods
 
 // Creates a identity matrix of size(rows, cols)
@@ -165,6 +201,22 @@ double **n_principal_components(matrix m, int n)
 	// Have to implement it
 	return m.data;
 }
+matrix matrix_mult_scalar(double b, matrix A){
+    matrix m = make_matrix(A.rows, A.cols);
+
+    for_loop(i, m.rows)
+    {
+        int j ;
+        for_loop(j, m.cols)
+        {
+            m.data[i][j] = b*A.data[i][j];
+        }
+    }
+
+
+    return m;
+}
+
 
 matrix solve_system(matrix M, matrix b)
 {
@@ -320,6 +372,22 @@ matrix random_matrix(int rows, int cols, double s)
     }
     return m;
 }
+matrix transpose_matrix(matrix m)
+{
+    matrix t;
+    t.rows = m.cols;
+    t.cols = m.rows;
+    t.data = calloc(t.rows, sizeof(double *));
+    t.shallow = 0;
+    int i, j;
+    for(i = 0; i < t.rows; ++i){
+        t.data[i] = calloc(t.cols, sizeof(double));
+        for(j = 0; j < t.cols; ++j){
+            t.data[i][j] = m.data[j][i];
+        }
+    }
+    return t;
+}
 matrix augment_matrix(matrix m)
 {
     int i,j;
@@ -333,6 +401,19 @@ matrix augment_matrix(matrix m)
         c.data[j][j+m.cols] = 1;
     }
     return c;
+}
+matrix axpy_matrix(double a, matrix x, matrix y)
+{
+    assert(x.cols == y.cols);
+    assert(x.rows == y.rows);
+    int i, j;
+    matrix p = make_matrix(x.rows, x.cols);
+    for(i = 0; i < x.rows; ++i){
+        for(j = 0; j < x.cols; ++j){
+            p.data[i][j] = a*x.data[i][j] + y.data[i][j];
+        }
+    }
+    return p;
 }
 
 // Test Matrix

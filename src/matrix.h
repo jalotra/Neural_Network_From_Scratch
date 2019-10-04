@@ -29,6 +29,8 @@ matrix make_matrix(int rows, int cols);
 matrix copy_matrix(matrix originalMatrix);
 void print_matrix(matrix originalMatrix);
 void free_matrix(matrix m);
+matrix matrix_sub_matrix(matrix a, matrix b);
+matrix matrix_add_matrix(matrix a, matrix b);
 
 // Neural Netwok spefic methods
 matrix make_identity(int rows, int cols);
@@ -37,7 +39,8 @@ matrix make_translation_homography(float dx, float dy);          // Creates a tr
 double mag_matrix(matrix originalMatrix);             // Returns the sqrt of sum of all the values
 double *sle_solve(matrix A, double *b);
 
-matrix matrix_mult_matrix(matrix A, matrix B);        // Multiplies two matrices
+matrix matrix_mult_scalar(double b, matrix A);
+matrix 	matrix_mult_matrix(matrix A, matrix B);        // Multiplies two matrices
 matrix matrix_elmult_matrix(matrix a, matrix b);		// Element wise multiplication of two matrices                          // Prints matrix
 double **n_principal_components(matrix m, int n);
 matrix solve_system(matrix M, matrix b);
