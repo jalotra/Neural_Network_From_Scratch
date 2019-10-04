@@ -18,7 +18,7 @@ void activate_matrix(matrix m, ACTIVATION a)
 	// int i, j;
 	for_loop(i, m.rows)
 	{
-		int j ;
+		// int j ;
 		double sum = 0, v; 
 		for_loop(j, m.cols)
 		{
@@ -30,12 +30,12 @@ void activate_matrix(matrix m, ACTIVATION a)
 				m.data[i][j] = v*linear_constant;
 			}
 			if(a == LOGISTIC)
-			
+			{
 				m.data[i][j] = 1/(1 + exp(-v)); 	
-			}
+            }
 			if (a == RELU)
 			{
-				if (v >= 0)
+				if (v > 0)
 				{
 					m.data[i][j] = v; 
 				}
@@ -47,7 +47,7 @@ void activate_matrix(matrix m, ACTIVATION a)
 			if (a == LRELU)
 			{
 				double alpha = 0.1;
-				if (v >= 0 )
+				if (v > 0 )
 				{
 					m.data[i][j] = v;
 				}
@@ -59,8 +59,10 @@ void activate_matrix(matrix m, ACTIVATION a)
 			if (a == SOFTMAX)
 			{
 				m.data[i][j] = 	exp(v);
-				sum += m.data[i][j]; 
+				
 			}
+            sum += m.data[i][j];
+        }
 		if(a == SOFTMAX)
 		{
 			for_loop(j, m.cols)
@@ -100,7 +102,7 @@ void gradient_matrix(matrix m, ACTIVATION a, matrix d)
             }
             if (a == RELU)
             {
-            	if (x >= 0)
+            	if (x > 0)
             	{
             		d.data[i][j] *= 1;
             	}
@@ -112,7 +114,7 @@ void gradient_matrix(matrix m, ACTIVATION a, matrix d)
             if (a == LRELU)
             {
             	double alpha = 0.1;
-            	if (x >= 0)
+            	if (x > 0)
             	{
             		d.data[i][j] *= 1;
             	}
@@ -137,7 +139,7 @@ matrix forward_layer(layer *l, matrix in)
 
     // TODO: fix this! multiply input by weights and apply activation function.
     // Multiply only is the rows of first matrix == cols of the second matrix
-    assert(in.cols == ((*l).w).rows);
+    assert(in.cols == (l->w.rows));
     // matrix out = make_matrix(in.rows, l->w.cols);
 
     // What will happen here is that suppose a weight matrix is there that is a row vector
@@ -208,9 +210,9 @@ void update_layer(layer *l, double rate, double momentum, double decay)
     // matrix delta_weight = make_matrix(l->w.rows, l->w.cols);
     // I think I have to subtract the previous l->v with the current l->w;
     // Lets do that: 
-    matrix delta_weight = l->dw;
-    delta_weight = matrix_sub_matrix(delta_weight , matrix_mult_scalar(decay, (l->w)));
-    delta_weight = matrix_add_matrix(delta_weight, matrix_mult_scalar(momentum, l->v));
+    matrix delta_weight = copy_matrix(l->dw);
+    delta_weight = matrix_sub_matrix(delta_weight , scale_matrix(decay, (l->w)));
+    delta_weight = matrix_add_matrix(delta_weight, scale_matrix(momentum, l->v));
 
 
     //Free the original matrix l->v
@@ -221,11 +223,10 @@ void update_layer(layer *l, double rate, double momentum, double decay)
 
     // Update l->w
 
-    l->w = axpy_matrix(1, l->w , matrix_mult_scalar(rate, delta_weight));
-    // Update Rule is quite simple
-	// Remember to free any intermediate results to avoid memory leaks
-	free_matrix(delta_weight);
-
+    l->w = matrix_add_matrix(l->w , scale_matrix(rate, delta_weight));
+ //    // Update Rule is quite simple
+	// // Remember to free any intermediate results to avoid memory leaks
+	// free_matrix(delta_weight);
 }
 
 // // Takes in layers and returns model output
