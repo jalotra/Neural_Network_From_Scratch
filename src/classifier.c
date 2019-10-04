@@ -138,19 +138,20 @@ matrix forward_layer(layer *l, matrix in)
     // TODO: fix this! multiply input by weights and apply activation function.
     // Multiply only is the rows of first matrix == cols of the second matrix
     assert(in.cols == ((*l).w).rows);
-    matrix out = make_matrix(in.rows, l->w.cols);
+    // matrix out = make_matrix(in.rows, l->w.cols);
 
     // What will happen here is that suppose a weight matrix is there that is a row vector
     // And a row vector that represents the input values is there
 
     // Now we have to do element wise multiplication of both the vectors and give the result 
     // as a vector or a matrix out.
-    out = matrix_mult_matrix(in, l->w);
+    matrix out = matrix_mult_matrix(in, l->w);
     // Now apply actiavtion function
     activate_matrix(out, l->activation);
 
     free_matrix(l->out);// free the old output
     l->out = out;       // Save the current output for gradient calculation
+ 
     return out;
 }
 
@@ -166,11 +167,8 @@ matrix backward_layer(layer *l, matrix delta)
          // = dL/dy * df(xw)/d(xw)
          // = dL/dy * f'(xw)
 
-	matrix in = make_matrix(l->in.rows, l->in.cols);
-	matrix w = make_matrix(l->w.rows, l->w.cols);
-
-	matrix mult = matrix_mult_matrix(in, w); 
-	gradient_matrix(mult, l->activation, delta);
+	// The output of the current layer is already present in the l->out variable. 
+	gradient_matrix(l->out, l->activation, delta);
 
 
 
@@ -178,26 +176,18 @@ matrix backward_layer(layer *l, matrix delta)
     // DERIVATIVE WITH RESPECT TO WEIGHTS
     // TODO: then calculate dL/dw and save it in l->dw
     free_matrix(l->dw);
-    matrix dw = make_matrix(l->w.rows, l->w.cols); // replace this
+    // matrix dw = make_matrix(l->w.rows, l->w.cols); // replace this
     // dL/dw = dL/d(xw) * d(xw)/dw
      //  = dL/d(xw) * x
     // Take transpose of the input layer and multiply it with the dl/d(x*w)
-    in = transpose_matrix(in);
-    dw = matrix_mult_matrix(in, mult);
+    matrix dw = matrix_mult_matrix(transpose_matrix(l->in), delta);
     l->dw = dw;
 
     
     // 1.4.3
-    // TODO: finally, calculate dL/dx and return it.
-    matrix dx = make_matrix(l->in.rows, l->in.cols); // replace this
-    w = transpose_matrix(w);
-    dx = matrix_mult_matrix(mult, dx);
-
-
-    // Free Up unused Matrices
-    free_matrix(in);
-    free_matrix(w);
-    free_matrix(mult);
+    // TODO: finally, calculate dL/dx and return it
+    // w = transpose_matrix(w);
+    matrix dx = matrix_mult_matrix(delta, transpose_matrix(l->w));
 
     return dx;
 }
@@ -215,16 +205,37 @@ void update_layer(layer *l, double rate, double momentum, double decay)
     // TODO:
     // Calculate Δw_t = dL/dw_t - λw_t + mΔw_{t-1}
     // save it to l->v
+    // matrix delta_weight = make_matrix(l->w.rows, l->w.cols);
+    // I think I have to subtract the previous l->v with the current l->w;
+    // Lets do that: 
+    matrix delta_weight = l->dw;
+    delta_weight = matrix_sub_matrix(delta_weight , matrix_mult_scalar(decay, (l->w)));
+    delta_weight = matrix_add_matrix(delta_weight, matrix_mult_scalar(momentum, l->v));
+
+
+    //Free the original matrix l->v
+    free_matrix(l->v);
+    // New Weight updates
+    l->v = delta_weight;
 
 
     // Update l->w
 
-
-    // Remember to free any intermediate results to avoid memory leaks
+    l->w = axpy_matrix(1, l->w , matrix_mult_scalar(rate, delta_weight));
+    // Update Rule is quite simple
+	// Remember to free any intermediate results to avoid memory leaks
+	free_matrix(delta_weight);
 
 }
 
-
+// // Takes in layers and returns model output
+// model make_model(layer *layers, int n)
+// {
+//     for(int i = 0; i < n ;i++)
+//     {
+//         make_layer(layers)
+//     }
+// }
 
 // Make a new layer for our model
 // int input: number of inputs to the layer
