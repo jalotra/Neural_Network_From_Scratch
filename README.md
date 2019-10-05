@@ -16,7 +16,7 @@ Most of the time I wanted to learn neural netwok, I came across a number of diff
 
 ## Implementing neural networks ##
 
-*I strongly recommend that use atleast see Lectures 12 and 13 to have a basic understanding of neural networks* 
+*I strongly recommend that you atleast see Lectures 12 and 13 to have a basic understanding of neural networks* 
 
 All the methods related to neural network are implemented in `src\classifier.c`. Check all the mentioned functions in this file.
 
