@@ -8,9 +8,15 @@ Look at this picture.
 
 
 ## Why this?
-I created this file to act as a starter template for students like me that want to implement a neural network and learn from it. Most of the time I wanted to learn neural netwok, I came across a number of different parameters like weight initialization, # of neurons, decay rate, learning rate, batch size etc. And I always thought that there must be something or a course that will tell you all of these because most of the teachers online say that it's all about trial and error and it is about trial and error. But finally I thought of creating a neural network on my own and came across some the best teachers in the world Joseph Redmon aka Pjreddie. He has open-sourced a number of lectures and they are a must to watch if you want to learn computer-vision . This the course link : [Ancient Secrets of Computer Vision](https://pjreddie.com/courses/computer-vision/)
+I created this file to act as a starter template for students like me that want to implement a neural network and learn from it. 
+
+Most of the time I wanted to learn neural netwok, I came across a number of different parameters like weight initialization, # of neurons, decay rate, learning rate, batch size etc. And I always thought that there must be something or a course that will tell you all of these because most of the teachers online say that it's all about trial and error and it is about trial and error.
+
+ But finally I thought of creating a neural network on my own and came across some the best teachers in the world Joseph Redmon aka Pjreddie. He has open-sourced a number of lectures and they are a must to watch if you want to learn computer-vision . This the course link : [Ancient Secrets of Computer Vision](https://pjreddie.com/courses/computer-vision/)
 
 ## Implementing neural networks ##
+
+*I strongly recommend that use atleast see Lectures 12 and 13 to have a basic understanding of neural networks* 
 
 All the methods related to neural network are implemented in `src\classifier.c`. Check all the mentioned functions in this file.
 
