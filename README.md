@@ -158,6 +158,8 @@ Now lets see what this function do.
 ## MUST READ
 *After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self.* 
 
+You don't have to code everything from scratch. I have build this on top of my existing repo. Check the repo [Image_Processing_Starter_Packge](https://github.com/jalotra/Image_Processing_Starter_Package)
+
 ## Installation:
 
 1. Clone this repository and make sure that you have Gcc installed. If you want to use any other C compiler, feel free to do that in the MakeFile that's presents in the root of this repo.
