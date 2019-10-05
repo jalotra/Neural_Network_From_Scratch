@@ -2,7 +2,10 @@
 ## What is a neural Network?
 Wiki says that a neural network is a network or circuit of neurons, or in a modern sense, an artificial neural network, composed of artificial neurons or nodes.These artificial networks may be used for predictive modeling, adaptive control and applications where they can be trained via a dataset. Self-learning resulting from experience can occur within networks, which can derive conclusions from a complex and seemingly unrelated set of information.
 
-Look at this picture. ![Neural Network](ReadmeData/Neural_Network_Example.png)
+Look at this picture. 
+
+![Neural Network](ReadmeData/Neural_Network_Example.png)
+
 
 ## Why this?
 I created this file to act as a starter template for students like me that want to implement a neural network and learn from it. Most of the time I wanted to learn neural netwok, I came across a number of different parameters like weight initialization, # of neurons, decay rate, learning rate, batch size etc. And I always thought that there must be something or a course that will tell you all of these because most of the teachers online say that it's all about trial and error and it is about trial and error. But finally I thought of creating a neural network on my own and came across some the best teachers in the world Joseph Redmon aka Pjreddie. He has open-sourced a number of lectures and they are a must to watch if you want to learn computer-vision . This the course link : [Ancient Secrets of Computer Vision](https://pjreddie.com/courses/computer-vision/)
