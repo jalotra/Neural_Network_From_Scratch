@@ -155,7 +155,8 @@ Now lets see what this function do.
 5. Calculate the loss matrix and backpropogate it through the model.
 6. Update the model weight through ` update_model(m, rate/batch, momentum, decay);`. See for SGD the rate changes to rate/batchsize.
 
-## After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self. 
+## MUST READ
+*After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self.* 
 
 ## Installation:
 
@@ -171,6 +172,7 @@ See line 15 in `Makefile`. Also  make sure you have `make` installed.
 
 To run your model you'll need the dataset. The training images can be found [here](https://pjreddie.com/media/files/mnist_train.tar.gz) and the test images are [here](https://pjreddie.com/media/files/mnist_test.tar.gz), I've preprocessed them for you into PNG format. To get the data you can run:
 
+
     wget https://pjreddie.com/media/files/mnist_train.tar.gz
     wget https://pjreddie.com/media/files/mnist_test.tar.gz
     tar xzf mnist_train.tar.gz
@@ -182,12 +184,14 @@ We'll also need a list of the images in our training and test set. To do this yo
     find test -name \*.png > mnist.test  
 
 2. CIFAR DATASET
-We have to do a similar process as last time, getting the data and creating files to hold the paths. Run:
 
+We have to do a similar process as last time, getting the data and creating files to hold the paths. Run:
+  ```
     wget http://pjreddie.com/media/files/cifar.tgz
     tar xzf cifar.tgz
     find cifar/train -name \*.png > cifar.train
     find cifar/test -name \*.png > cifar.test
+```
 
 ## Further Developments
 Since fo now each layer is connected to the next layer in a fully connected way. I want to implement some other layers also like Convolution Layer, Max Pooling Layer, Dropout Layer etc.
@@ -199,7 +203,7 @@ Since fo now each layer is connected to the next layer in a fully connected way.
 2. If you would like to create custom layers as I have written above. Create a issue and discuss with me as I want this repo to be as clean as possible.
 
 ## Authors
-** Shivam Jalotra ** - (https://github.com/jalotra)
+**Shivam Jalotra** - (https://github.com/jalotra)
 
 ## Acknowledgments
 
