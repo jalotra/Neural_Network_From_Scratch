@@ -17,22 +17,22 @@ All the methods related to neural network are implemented in `src\classifier.c`.
 A neural network is made up of a number of layers or fully connected layers. Each layer has following entites:
 1. Input neurons
 2. Weights corresponding to each neuron
-3. Current weight Updates while backpropogating
-4. Past weight updates fo use with momentum
+3. Current weight updates while backpropogating
+4. Past weight updates to use with momentum
 5. Activation Function to add non-linearity in model
 5. Output neurons
 
 
 ### Activation functions ###
 
-An important part of machine learning, be it linear classifiers or neural networks, is the activation function you use. This has been implemented in `void activate_matrix(matrix m, ACTIVATION a)` and is used to modify `m` to be `f(m)` applied elemetwise all along the output matrix.
+An important part of machine learning, be it classifiers or neural networks, is the activation function you use. This has been implemented in `void activate_matrix(matrix m, ACTIVATION a)` and is used to modify `m` to be `f(m)` applied elemetwise all along the output matrix.
 
 The different Activation functions that I have implemented are:
-1. LINEAR        // Just a linear activation
-2. LOGISTIC      // Not so good due to gradient loss if x becomes large or > 7 
-3. RELU          // Rectified-linear-Unit
-4. LRELU         // Leaky-Relu
-5. SOFTMAX       // Mainly used before the output layer 
+1. LINEAR        --> Just a linear activation
+2. LOGISTIC OR SIGMOID     --> Not so good due to vanishing gradients
+3. RELU          --> Rectified-linear-Unit
+4. LRELU         --> Leaky-Relu
+5. SOFTMAX       --> Mainly used before the output layer 
 
 ### Taking gradients ###
 
@@ -40,7 +40,7 @@ As we are calculating the partial derivatives for the weights of our model we ha
 
 Normally, to calculate `f'(x)` we would need to remember what the input to the function, `x`, was. However, all of our activation functions have the nice property that we can calculate the gradient `f'(x)` only with the output `f(x)`. This means we have to remember less stuff when running our model.
 
-In my view you must differentiate all the functions yourself and then see if I have implemented it rightly or not. Check this readthedocs for detailed information [Activation Functions Described](https://ml-cheatsheet.readthedocs.io/en/latest/activation_functions.html)
+In my view you must differentiate all the functions yourself and then see if I have implemented it rightly or not. Check this readthedocs for detailed information [Activation Functions Described](https://ml-cheatsheet.readthedocs.io/en/latest/activation_functions.html).
 
 
 After learning about the gradients check this function `void gradient_matrix(matrix m, ACTIVATION a, matrix d)`
@@ -105,7 +105,7 @@ again, we have to make the matrix dimensions line up so it actually ends up bein
 
 After we've performed a round of forward and backward propagation we want to update our weights. Check  `void update_layer(layer *l, double rate, double momentum, double decay)` .
 
-Remember from class with momentum and decay our weight update rule is:
+Remember that with momentum and decay our weight update rule is:
 
     Δw_t = dL/dw_t - λw_t + mΔw_{t-1}
     w_{t+1} = w_t + ηΔw_t
@@ -119,7 +119,7 @@ Finally, apply the weight change to your weights by adding a scaled amount of th
 ## Creating and learning a Model
 
 ### Creating a New Layer
-To create a model that can do snything in the first place you have to create hidden layers and for all those hidden layers you have to think of the best suited activation function and different hyperparameters that come along. 
+To create a model that can do something, you have to create a number of hidden layers in the first place and for all those hidden layers you have to think of the best suited activation function and different hyperparameters that come along. 
 
 Lets see how to create a new layer:
 
@@ -186,6 +186,7 @@ We'll also need a list of the images in our training and test set. To do this yo
 2. CIFAR DATASET
 
 We have to do a similar process as last time, getting the data and creating files to hold the paths. Run:
+
   ```
     wget http://pjreddie.com/media/files/cifar.tgz
     tar xzf cifar.tgz
