@@ -12,7 +12,7 @@ I created this file to act as a starter template for students like me that want 
 
 ## Implementing neural networks ##
 
-All the methods related to neural network are implemented in `src\classifier.c`. Check all the  mentioned functions in this file.
+All the methods related to neural network are implemented in `src\classifier.c`. Check all the mentioned functions in this file.
 
 A neural network is made up of a number of layers or fully connected layers. Each layer has following entites:
 1. Input neurons
@@ -115,6 +115,98 @@ We'll be doing gradient ascent (the partial derivative component is positive) in
 Calculate the current weight change as a weighted sum of `l->dw`, `l->w`, and `l->v`. The function `matrix axpy_matrix(double a, matrix x, matrix y)` will be useful here, it calculates the result of the operation `ax+y` where `a` is a scalar and `x` and `y` are matrices. Save the current weight change in `l->v` for next round (remember to free the current `l->v` first).
 
 Finally, apply the weight change to your weights by adding a scaled amount of the change based on the learning rate.
+
+## Creating and learning a Model
+
+### Creating a New Layer
+To create a model that can do snything in the first place you have to create hidden layers and for all those hidden layers you have to think of the best suited activation function and different hyperparameters that come along. 
+
+Lets see how to create a new layer:
+
+As you can see in line 245 `src/classifier.c`.
+
+* We initialize the `l->in` matrix and `l->out` with one neuron.
+
+* We do the weight initialization quite effectively. There a few methods to do so. One is known as Xavier Initialization. See it here [Xavier Initialization](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf), here I initialize the weights as a random matrix of size `input*output` with values that lie in the range `(-sqrt(2/input), sqrt(2/input))`. And this works pretty well
+
+* We create the past weights updates as l->v, current weight updates l->dw of same dimensions as that of l->w.
+
+* Final Step is to have a activation function for the layer. And we do this by setting `l->activation`.
+
+## Running the model Forward
+After every time we backpropogate and do weight updation we have to do forward propagation. 
+
+Check line 261 for that `matrix forward_model(model m, matrix X)`.
+Now this function does is call the forward_layer function for all the layers in the model and set the weights.
+`X = foward_layer(m.(layers+i), X)` sets X that is the input matrix to the output matrix at each layer.
+
+## Running the model Backward
+Once the weights are all set, we have to backpropogate the error through the model. Check line 273 in the `src/classifier.c` for more information on the above method. We send the matrix Loss_D (which represnts loss of each layer) in backward sense throgh the `backward_layer(layer* working_layer, matrix Loss_D)` .
+
+
+## Training the Model
+See line 357. The function declaration looks like this : `void train_model(model m, data d, int batch, int iters, double rate, double momentum, double decay)`.
+
+Now lets see what this function do.
+1. The model trains for `int iters` number of times.
+2. Creates a random data batch of batch size `batch` from the whole data points.
+3. Do a forward_propagation taking in (model, batch.X)
+4. Calculate the cross entropy loss for the last layer.
+5. Calculate the loss matrix and backpropogate it through the model.
+6. Update the model weight through ` update_model(m, rate/batch, momentum, decay);`. See for SGD the rate changes to rate/batchsize.
+
+## After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self. 
+
+## Installation:
+
+1. Clone this repository and make sure that you have Gcc installed. If you want to use any other C compiler, feel free to do that in the MakeFile that's presents in the root of this repo.
+See line 15 in `Makefile`. Also  make sure you have `make` installed.
+
+2. Fire `make` from a Cli. This will create all the the objects and link them to each other.
+
+3. Finally create you own neural nets and play with them as whole of the project has a python wrapper. So you just have to define models in a `.py` file. Example models are present in the neuralNetworkTrainer.py file.
+
+### Datasets to play with 
+1. MNIST DATASET
+
+To run your model you'll need the dataset. The training images can be found [here](https://pjreddie.com/media/files/mnist_train.tar.gz) and the test images are [here](https://pjreddie.com/media/files/mnist_test.tar.gz), I've preprocessed them for you into PNG format. To get the data you can run:
+
+    wget https://pjreddie.com/media/files/mnist_train.tar.gz
+    wget https://pjreddie.com/media/files/mnist_test.tar.gz
+    tar xzf mnist_train.tar.gz
+    tar xzf mnist_test.tar.gz
+
+We'll also need a list of the images in our training and test set. To do this you can run:
+
+    find train -name \*.png > mnist.train
+    find test -name \*.png > mnist.test  
+
+2. CIFAR DATASET
+We have to do a similar process as last time, getting the data and creating files to hold the paths. Run:
+
+    wget http://pjreddie.com/media/files/cifar.tgz
+    tar xzf cifar.tgz
+    find cifar/train -name \*.png > cifar.train
+    find cifar/test -name \*.png > cifar.test
+
+## Further Developments
+Since fo now each layer is connected to the next layer in a fully connected way. I want to implement some other layers also like Convolution Layer, Max Pooling Layer, Dropout Layer etc.
+
+
+## Contributing 
+1. If you have some doubt reagarding any line of code email me right away or create an issue. [Email](jalotrashivam9@gmail.com)
+
+2. If you would like to create custom layers as I have written above. Create a issue and discuss with me as I want this repo to be as clean as possible.
+
+## Authors
+** Shivam Jalotra ** - (https://github.com/jalotra)
+
+## Acknowledgments
+
+* I thank Pjreddie from the bottom of my heart for creating such a greate course and wonderful assignments.
+* I think that everybody who wants to learn Computer Vision or Neural Network in general should watch do this course [Ancient Secrets of Computer Vision](https://pjreddie.com/courses/computer-vision/)
+* Finally I thank you for reading through all this. 
+
 
 
 
