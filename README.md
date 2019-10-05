@@ -12,7 +12,7 @@ I created this file to act as a starter template for students like me that want 
 
 ## Implementing neural networks ##
 
-All the methods related to neural network are implemented in `src\classifier.c`. Check the below mentioned in this file.
+All the methods related to neural network are implemented in `src\classifier.c`. Check all the  mentioned functions in this file.
 
 A neural network is made up of a number of layers or fully connected layers. Each layer has following entites:
 1. Input neurons
