@@ -1,3 +1,14 @@
+MODEL IS DEFINED LIKE THIS:
+l = [make_layer(inputs, 32, RELU),
+    		make_layer(32, 16,RELU),
+		#make_layer(16, 8, RELU),
+            make_layer(16, outputs, SOFTMAX)]
+
+#Input Layer takes in input and feed in a 32 neuron layer
+#fIRST Hidden Layer contains 32 output neurons with RELU activation
+#Second Hiiden Layer contains 8 output neurons with RELU activation
+#FInal we taken SOftmax and return the max of all the probabilites
+
 loading data...
 Loading Data done
 ()
