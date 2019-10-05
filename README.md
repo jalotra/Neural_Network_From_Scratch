@@ -139,18 +139,18 @@ As you can see in line 245 `src/classifier.c`.
 
 * Final Step is to have a activation function for the layer. And we do this by setting `l->activation`.
 
-## Running the model Forward
+### Running the model Forward
 After every time we backpropogate and do weight updation we have to do forward propagation. 
 
 Check line 261 for that `matrix forward_model(model m, matrix X)`.
 Now this function does is call the forward_layer function for all the layers in the model and set the weights.
 `X = foward_layer(m.(layers+i), X)` sets X that is the input matrix to the output matrix at each layer.
 
-## Running the model Backward
+### Running the model Backward
 Once the weights are all set, we have to backpropogate the error through the model. Check line 273 in the `src/classifier.c` for more information on the above method. We send the matrix Loss_D (which represnts loss of each layer) in backward sense throgh the `backward_layer(layer* working_layer, matrix Loss_D)` .
 
 
-## Training the Model
+### Training the Model
 See line 357. The function declaration looks like this : `void train_model(model m, data d, int batch, int iters, double rate, double momentum, double decay)`.
 
 Now lets see what this function do.
