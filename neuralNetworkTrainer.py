@@ -39,13 +39,13 @@ def neural_on_mnist_dataset():
 
 	print("training model...")
 	batch = 128
-	iters = 1000
+	iters = 3000
 	rate = .01
 	momentum = .9
 	decay = .0005
 
 	m = neural_net(train.X.cols, train.y.cols)
-	print(train_model(m, train, batch, iters, rate, momentum, decay))
+	train_model(m, train, batch, iters, rate, momentum, decay)
 	print("Training done")
 	training_time = time.time()
 	print('Training Ttime took {}'.format(training_time - start_time))
