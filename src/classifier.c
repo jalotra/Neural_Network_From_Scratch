@@ -257,7 +257,7 @@ layer make_layer(int input, int output, ACTIVATION activation)
     // m - > mean
     // s - > std
     // Works good with MSE
-    l.w = normal_random_matrix(int rows, int cols, 0.1, 1)
+    l.w = normal_random_matrix(input, output, 0.1, 1);
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
