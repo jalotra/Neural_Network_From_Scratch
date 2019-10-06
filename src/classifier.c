@@ -251,6 +251,10 @@ layer make_layer(int input, int output, ACTIVATION activation)
     // Originally 
     // l.w = random_matrix(input, output, sqrt(2./input));
     l.w =  normal_random_matrix(input, output, 0.5, 1);
+
+    printf("LAYERS PRINTED")
+    print_matrix(l.w);
+    printf("\n");
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
