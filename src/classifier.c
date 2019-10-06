@@ -441,10 +441,10 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
 
         // fOR CROSS ENTROPY LOSS
-        matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
+        matrix dL = Last_Layer_Loss_Cross_Entropy(b.y, p);
 
         // fOR MEAN SQUARED ERROR 
-        // matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        // matrix dL = Last_Layer_Loss_Mean_Squared(b.y, p);
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
