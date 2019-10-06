@@ -391,13 +391,11 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
             {
                 if(i != k)
                 {
-                    loss += (b.y.data[k][j] - p.data[k][j]);
-                    loss *= p.data[k][j]*p.data[i][j];
+                    loss += (b.y.data[k][j] - p.data[k][j])*(p.data[k][j]*p.data[i][j]);
                 }
                 if(i == k)
                 {
-                    loss += (b.y.data[i][j] - p.data[i][j]);
-                    loss *= p.data[i][j]*(1 - p.data[i][j]);
+                    loss -= (b.y.data[i][j] - p.data[i][j])*(p.data[i][j]*(1 - p.data[i][j]));
                 }
             }
 
