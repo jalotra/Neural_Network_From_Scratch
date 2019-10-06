@@ -83,6 +83,49 @@ matrix axpy_matrix(double a, matrix x, matrix y)
     }
     return p;
 }
+double box_muller_normal_random(double m, double s)   /* normal random variate generator */
+{                       /* mean m, standard deviation s */
+    double x1, x2, w, _y1;
+    double y2;
+    int use_last = 0;
+
+    if (use_last)               /* use value from previous call */
+    {
+        _y1 = y2;
+        use_last = 0;
+    }
+    else
+    {
+        do {
+            x1 = 2.0 * drand48() - 1.0;
+            x2 = 2.0 * drand48() - 1.0;
+            w = x1 * x1 + x2 * x2;
+        } while ( w >= 1.0 );
+
+        w = sqrt( (-2.0 * log( w ) ) / w );
+        _y1 = x1 * w;
+        y2 = x2 * w;
+        use_last = 1;
+    }
+
+        double result = ( m + _y1 * s );
+
+    return result;
+}
+
+matrix normal_random_matrix(int rows, int cols, double m, double s)
+{
+    matrix mat = make_matrix(rows, cols);
+    
+    int i, j;
+    for(i = 0; i < rows; ++i){
+        for(j = 0; j < cols; ++j){
+            mat.data[i][j] =  (double) box_muller_normal_random(m , s);    
+        }
+    }
+    return mat;
+}
+
 
 matrix transpose_matrix(matrix m)
 {
