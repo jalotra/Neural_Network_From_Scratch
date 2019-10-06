@@ -128,7 +128,8 @@ Finally, apply the weight change to your weights by adding a scaled amount of th
 Now since you have learned how to backpropogate the error. The main task still remains and that is to calculate the error at the last layer so we can propogate it in the first place. For that the way to do so is to find out the error using a error function. 
 
 I have implemented two error functions:
-1. Cross Entropy Loss : 
+1. 
+Cross Entropy Loss : 
 Calculates the cross-entropy loss for the ground-truth labels y and our predictions p. Cross-entropy loss is just negative log-likelihood (we discussed log-likelihood in class for logistic regression) for multi-class classification. Since we added the negative sign it becomes a loss function that we want to minimize. Cross-entropy loss is given by:
 
 L = Σ(-y_i log(p_i))
@@ -140,7 +141,8 @@ During training, we'll just calculate dL/dy as (y - truth) and set the gradient 
 
 See `matrix Last_Layer_Loss_Cross_Entropy(data b, matrix p)` for dL/dy implementation.
 
-2. Mean-squared Error
+2.
+Mean-squared Error:
 Calculates the mean squared error between the ground truth y and our predictions p. MSE is a loss most of you would be familiar with but for the notion of describing everything I am writing once more here.
 ```
 MSE =  (1/n)Σ(y - (p_i))^2
@@ -152,8 +154,8 @@ So assume that in the first forward feed you have adjusted all your hidden layer
 
 I have calculated the Backrop-Error dL/dy here in this picture. Please have a look.
 
-![MSE with Cross Entropy Loss 1](ReadmeData/MSE_with_cross_entropy_loss1.png)
-![MSE with Cross Entropy Loss 2](ReadmeData/MSE_with_cross_entropy_loss2.png)
+![MSE with Cross Entropy Loss 1](ReadmeData/MSE_with_cross_entropy_loss1.jpg)
+![MSE with Cross Entropy Loss 2](ReadmeData/MSE_with_cross_entropy_loss2.jpg)
 
 Now since you got the maths behind writing the Gradient of MSE with respect to the output of the softmax output.
 Lets see the function in action.
