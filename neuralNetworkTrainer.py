@@ -29,7 +29,7 @@ def neural_on_mnist_dataset():
 	start_time = time.time()
 	print("loading data...")
 	train_file_path = "mnist.train"
-	labels_path = "mnist.labels"
+	labels_path = "mnist/mnist.labels"
 	test_file_path = "mnist.test"
 
 	train = load_classification_data(c_char_p(train_file_path.encode('utf-8')), c_char_p(labels_path.encode('utf-8')), 1)
