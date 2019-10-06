@@ -401,7 +401,7 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
                     loss -= (b.y.data[i][j] - p.data[i][j])*(p.data[i][j]*(1 - p.data[i][j]));
                 }
 
-                dL.data[i][j] = loss;
+                dL.data[k][j] = loss;
             }
 
             
@@ -446,10 +446,10 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
         // fOR CROSS ENTROPY LOSS
         // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
-        matrix dL = axpy_matrix(-1, p, b.y);
+        // matrix dL = axpy_matrix(-1, p, b.y);
 
         // fOR MEAN SQUARED ERROR 
-        // matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
