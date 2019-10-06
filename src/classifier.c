@@ -250,7 +250,7 @@ layer make_layer(int input, int output, ACTIVATION activation)
     //Weight Initialisation Case 1
     // Randomly Distributed
     // Works good with cross entropy
-    l.w   = random_matrix(input, output, sqrt(2./input));
+    // l.w   = random_matrix(input, output, sqrt(2./input));
 
     // Weight Initialisation Type 2 
     // Normal Random
