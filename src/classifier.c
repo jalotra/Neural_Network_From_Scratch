@@ -357,7 +357,7 @@ double mean_squared_loss(matrix y, matrix p)
     {
         for(j = 0; j < y.cols; j++)
         {
-            sum += -0.5*(y.data[i][j]-p.data[i][j])*(y.data[i][j]- p.data[i][j]);
+            sum += 0.5*(y.data[i][j]-p.data[i][j])*(y.data[i][j]- p.data[i][j]);
         }
     }
 
