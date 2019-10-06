@@ -248,7 +248,9 @@ layer make_layer(int input, int output, ACTIVATION activation)
     layer l;
     l.in  = make_matrix(1,1);
     l.out = make_matrix(1,1);
-    l.w = random_matrix(input, output, sqrt(2/input));
+    // Originally 
+    // l.w = random_matrix(input, output, -sqrt(2/input))
+    l.w =  normal_random_matrix(input, output, 0.5, 1);
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
@@ -346,6 +348,7 @@ double cross_entropy_loss(matrix y, matrix p)
     return sum/y.rows;
 }
 
+
 double mean_squared_loss(matrix y, matrix p)
 {
     int i,j;
@@ -354,7 +357,7 @@ double mean_squared_loss(matrix y, matrix p)
     {
         for(j = 0; j < y.cols; j++)
         {
-            sum += 0.5*(y.data[i][j]-p.data[i][j])*(y.data[i][j]- p.data[i][j]);
+            sum += -0.5*(y.data[i][j]-p.data[i][j])*(y.data[i][j]- p.data[i][j]);
         }
     }
 
@@ -401,7 +404,7 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
             
         }
         // Finally set up the dl MATRIX
-        dL.data[i][j] = -loss;
+        dL.data[i][j] = loss;
 
     }
     return dL; 
@@ -439,10 +442,10 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
 
         // fOR CROSS ENTROPY LOSS
-        matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
+        // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
 
         // fOR MEAN SQUARED ERROR 
-        // matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);

@@ -31,6 +31,8 @@ matrix matrix_elmult_matrix(matrix a, matrix b);		// Element wise multiplication
 matrix random_matrix(int rows, int cols, double s);
 matrix transpose_matrix(matrix m);
 matrix axpy_matrix(double a, matrix x, matrix y);
+double box_muller_normal_random(double m, double s);
+matrix normal_random_matrix(int, int, double, double);
 
 
 // test matrix 
