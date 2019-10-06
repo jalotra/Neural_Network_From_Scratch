@@ -187,7 +187,7 @@ matrix normal_random_matrix(int rows, int cols, double m, double s)
     int i, j;
     for(i = 0; i < rows; ++i){
         for(j = 0; j < cols; ++j){
-            mat.data[i][j] =  box_muller_normal_random(m , s);    
+            mat.data[i][j] =  (double) box_muller_normal_random(m , s);    
         }
     }
     return mat;

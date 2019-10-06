@@ -1,17 +1,30 @@
 from uwimg import *
 import time
 import sys
+# import pandas as pd
 
 def softmax_model(inputs, outputs):
     l = [make_layer(inputs, outputs, SOFTMAX)]
     return make_model(l)
 
 def neural_net(inputs, outputs):
-    print (inputs)
-    l = [make_layer(inputs, 32, RELU),
-    		make_layer(32, 16,RELU),
+    # print (inputs)
+    l = [make_layer(inputs, 16, RELU),
+    		# make_layer(32, 16,RELU),
 		#make_layer(16, 8, RELU),
             make_layer(16, outputs, SOFTMAX)]
+
+
+    # for i in range(len(l)):
+    # 	print_matrix(l[i].w)
+
+
+    # Put these layers w varibale in a dataframe
+    # for i in range len(l):
+    # df =  pd.Dataframe(l[0].w)
+    # df.to_csv('layer1.csv')
+
+    # return 
     return make_model(l)
 
 def save_to_file(filepath, process_to_run):
@@ -39,12 +52,13 @@ def neural_on_mnist_dataset():
 
 	print("training model...")
 	batch = 128
-	iters = 1000
+	iters = 3000
 	rate = .01
 	momentum = .9
 	decay = .0005
 
-	m = neural_net(train.X.cols, train.y.cols)
+	m = neural_net(train.X.cols, train.y.cols)            
+	# print(train.X.cols, train.y.cols)						# 785, 10
 	train_model(m, train, batch, iters, rate, momentum, decay)
 	print("Training done")
 	training_time = time.time()
@@ -62,4 +76,11 @@ def neural_on_mnist_dataset():
 
 if __name__ == "__main__":
 	save_to_file("results/mnist_Relu_Activation", neural_on_mnist_dataset())
+	# train_file_path = "mnist.train"
+	# labels_path = "mnist.labels"
+	# test_file_path = "mnist.test"
+	# train = load_classification_data(c_char_p(train_file_path.encode('utf-8')), c_char_p(labels_path.encode('utf-8')), 1)
+	# test  = load_classification_data(c_char_p(test_file_path.encode('utf-8')),c_char_p(labels_path.encode('utf-8')) , 1)
+
+	# print_matrix(neural_net(train.X.cols, train.y.cols)[0])
 	

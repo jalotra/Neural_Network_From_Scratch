@@ -10,69 +10,161 @@
 #include "classifier.h"
 
 
-// Runs activation function on every element of input matrix
-// It modifies the matrix in place
-// matrix m : Input to activation function
-// ACTIVATION a : Activation FUnction to run
+// // Runs activation function on every element of input matrix
+// // It modifies the matrix in place
+// // matrix m : Input to activation function
+// // ACTIVATION a : Activation FUnction to run
+// void activate_matrix(matrix m, ACTIVATION a)
+// {
+//     // FOr Softmax regression
+//      // Calculate the max first
+//     if(a == SOFTMAX)
+//     {
+//         double sum ;
+//         for_loop(i, m.rows)
+//         {
+//             // double max = m.data[i][0];
+//             // for_loop(j, m.cols)
+//             // {
+                
+//             //     if(m.data[i][j] > max)
+//             //         {
+//             //             max = m.data[i][j];
+//             //         }   
+//             // }
+//             for_loop(k, m.cols)
+//             {
+//                 // double v = m.data[i][j];
+
+//                 m.data[i][k] =  exp(m.data[i][k]);
+//                 sum += m.data[i][k];
+//             }
+
+//             for_loop(l, m.cols)
+//             {
+//                 m.data[i][l] /= sum;
+//             }
+//         }
+        
+//     }
+    
+//     else
+//     {
+//         for_loop(i, m.rows)
+//         {
+//             // int j ;
+//             double v; 
+//             for_loop(j, m.cols)
+//             {
+//                 v = m.data[i][j];
+
+//                 if(a == LINEAR)
+//                 {
+//                     const double linear_constant = 0.3;
+//                     m.data[i][j] = v*linear_constant;
+//                 }
+//                 if(a == LOGISTIC)
+//                 {
+//                     m.data[i][j] = 1/(1 + exp(-v));     
+//                 }
+//                 if (a == RELU)
+//                 {
+//                     if (v > 0)
+//                     {
+//                         m.data[i][j] = v; 
+//                     }
+//                     else 
+//                     {
+//                         m.data[i][j] = 0;
+//                     }
+//                 }
+//                 if (a == LRELU)
+//                 {
+//                     double alpha = 0.1;
+//                     if (v > 0 )
+//                     {
+//                         m.data[i][j] = v;
+//                     }
+//                     else
+//                     {
+//                         m.data[i][j] = alpha*v;
+//                     }
+//                 }
+//             }
+
+        
+//     }
+//     }
+// 	// int i, j;
+	
+
+
 void activate_matrix(matrix m, ACTIVATION a)
 {
-	// int i, j;
-	for_loop(i, m.rows)
-	{
-		// int j ;
-		double sum = 0, v; 
-		for_loop(j, m.cols)
-		{
-			v = m.data[i][j];
+    // int i, j;
+    for_loop(i, m.rows)
+    {
+        // int j ;
+        double sum = 0, v; 
+        for_loop(j, m.cols)
+        {
+            v = m.data[i][j];
 
-			if(a == LINEAR)
-			{
-				const double linear_constant = 0.3;
-				m.data[i][j] = v*linear_constant;
-			}
-			if(a == LOGISTIC)
-			{
-				m.data[i][j] = 1/(1 + exp(-v)); 	
+            if(a == LINEAR)
+            {
+                const double linear_constant = 0.3;
+                m.data[i][j] = v*linear_constant;
             }
-			if (a == RELU)
-			{
-				if (v > 0)
-				{
-					m.data[i][j] = v; 
-				}
-				else 
-				{
-					m.data[i][j] = 0;
-				}
-			}
-			if (a == LRELU)
-			{
-				double alpha = 0.1;
-				if (v > 0 )
-				{
-					m.data[i][j] = v;
-				}
-				else
-				{
-					m.data[i][j] = alpha*v;
-				}
-			}
-			if (a == SOFTMAX)
-			{
-				m.data[i][j] = 	exp(v);
-				
-			}
+            if(a == LOGISTIC)
+            {
+                m.data[i][j] = 1/(1 + exp(-v));     
+            }
+            if (a == RELU)
+            {
+                if (v > 0)
+                {
+                    m.data[i][j] = v; 
+                }
+                else 
+                {
+                    m.data[i][j] = 0;
+                }
+            }
+            if (a == LRELU)
+            {
+                double alpha = 0.1;
+                if (v > 0 )
+                {
+                    m.data[i][j] = v;
+                }
+                else
+                {
+                    m.data[i][j] = alpha*v;
+                }
+            }
+            if (a == SOFTMAX)
+            {
+                // double max = m.data[i][0];
+                // for_loop(j, m.cols)
+                // {
+                //     if(m.data[i][j] > max) max = m.data[i][j];
+                // }
+
+                m.data[i][j] =  exp(v);
+                
+            }
             sum += m.data[i][j];
         }
-		if(a == SOFTMAX)
-		{
-			for_loop(j, m.cols)
-			{
-				m.data[i][j] /= sum; 
-			}
-		}
-	}
+        if(a == SOFTMAX)
+        {
+            for_loop(j, m.cols)
+            {
+                m.data[i][j] /= sum; 
+            }
+        }
+    }
 }
+
 
 
 // Calculates the gradient of an activation function and multiplies it into
@@ -246,15 +338,15 @@ void update_layer(layer *l, double rate, double momentum, double decay)
 layer make_layer(int input, int output, ACTIVATION activation)
 {
     layer l;
-    l.in  = make_matrix(1,1);
+    l.in  = make_matrix(1,1);                                                                                                                                                               
     l.out = make_matrix(1,1);
     // Originally 
-    // l.w = random_matrix(input, output, sqrt(2./input));
-    l.w =  normal_random_matrix(input, output, 0.5, 1);
+    // l.w = random_matrix(input, output, sqrt(2.0/input));
+    l.w =  normal_random_matrix(input, output, 0.1, 1);
 
-    printf("LAYERS PRINTED");
-    print_matrix(l.w);
-    printf("\n");
+    // printf("LAYERS PRINTED");
+    // print_matrix(l.w);
+
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
@@ -270,6 +362,7 @@ matrix forward_model(model m, matrix X)
     int i;
     for(i = 0; i < m.n; ++i){
         X = forward_layer(m.layers + i, X);
+        // print_matrix(X);
     }
     return X;
 }
@@ -391,9 +484,9 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
     double loss;
     for(k = 0; k < dL.rows; k++)
     {
-        loss = 0;
         for(i = 0; i < dL.rows; i++)
         {
+            loss = 0;
             for(j = 0; j < dL.cols; j++)
             {
                 if(i != k)
@@ -405,7 +498,7 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
                     loss -= (b.y.data[i][j] - p.data[i][j])*(p.data[i][j]*(1 - p.data[i][j]));
                 }
 
-                dL.data[k][j] = loss;
+                dL.data[i][j] = loss/p.rows;
             }
 
             
@@ -445,7 +538,7 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
         fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p)); 
 
 
-        // fprintf(stderr, "%06d: Loss: %f\n", e, mean_absolute_loss(b.y, p))
+        // fprintf(stderr, "%06d: Loss: %f\n", e, mean_squared_loss(b.y, p));
 
 
         // fOR CROSS ENTROPY LOSS
@@ -454,10 +547,15 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
         // fOR MEAN SQUARED ERROR 
         matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        // print_matrix(dL);
+        // fprintf(stderr, "Rows : %d Cols : %d", dL.rows, dL.cols);
+
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
         free_matrix(dL);
         free_data(b);
+
+        
     }
 }
