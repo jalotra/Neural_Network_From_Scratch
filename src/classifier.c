@@ -444,7 +444,34 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
         // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
 
         // fOR MEAN SQUARED ERROR 
-        matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        // matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        matrix dL = make_matrix(p.rows, p.cols);
+        int i, j, k;
+        double loss;
+        for(i = 0; i < dL.rows; i++)
+        {
+            loss = 0;
+            for(j = 0; j < dL.cols; j++)
+            {
+                for(k = 0; k < dL.rows; k++)
+                {
+                    if(i != k)
+                    {
+                        loss += (b.y.data[k][j] - p.data[k][j]);
+                        loss *= p.data[k][j]*p.data[i][j];
+                    }
+                    if(i == k)
+                    {
+                        loss += (b.y.data[i][j] - p.data[i][j]);
+                        loss *= p.data[i][j]*(1 - p.data[i][j]);
+                    }
+                }
+
+                // Finally set up the dl MATRIX
+                dL.data[i][j] = loss;
+
+            }
+        }
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
