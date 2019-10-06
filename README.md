@@ -4,7 +4,7 @@ Wiki says that a neural network is a network or circuit of neurons, or in a mode
 
 Look at this picture. 
 
-![Neural Network](ReadmeData/Neural_Network_Example.png)
+<center> ![Neural Network](ReadmeData/Neural_Network_Example.png) </center>
 
 
 ## Why this?
@@ -136,7 +136,6 @@ L = Σ(-y_i log(p_i))
 for a single data point, summing across the different classes. Cross-entropy loss is nice to use with our softmax activation because the partial derivatives are nice. If the output of our final layer uses a softmax: y = σ(wx) then:
 dL/d(wx) = (y - truth)
 See why f'(wx) becomes 1 [Softmax with Cross Entropy Loss](https://math.stackexchange.com/questions/945871/derivative-of-softmax-loss-function?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa).
-
 During training, we'll just calculate dL/dy as (y - truth) and set the gradient of the softmax to be 1 everywhere to have the same effect, as discussed earlier. This avoids numerical instability with calculating the "true" dL/dy and dσ(x)/dx for cross-entropy loss and the softmax function independently and multiplying them together.
 
 See `matrix Last_Layer_Loss_Cross_Entropy(data b, matrix p)` for dL/dy implementation.
@@ -151,7 +150,7 @@ Now the question remains to use cross-entropy loss with MSE.
 Lets do that : 
 So assume that in the first forward feed you have adjusted all your hidden layer outputs based on the fact that each neuron output will be f(wx). And now you want to back-propogate the error.
 
-I have calculated the Backrop-Error dL/dy here in this picture. Please have a look.
+I have calculated the Backprop-Error dL/dy here in this picture. Please have a look.
 
 ![MSE with Cross Entropy Loss 1](ReadmeData/MSE_with_cross_entropy_loss1.jpg)
 ![MSE with Cross Entropy Loss 2](ReadmeData/MSE_with_cross_entropy_loss2.jpg)
