@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include "image.h"
 #include "matrix.h"
@@ -375,6 +376,48 @@ double mean_absolute_loss(matrix y, matrix p)
     return sum/y.rows;
 }
 
+matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
+{
+    // In case of Mean_Squared_Error the dL/dy is calculated as :
+   matrix dL = make_matrix(p.rows, p.cols);
+    int i, j, k;
+    double loss;
+    for(i = 0; i < dL.rows; i++)
+    {
+        loss = 0;
+        for(j = 0; j < dL.cols; j++)
+        {
+            for(k = 0; k < dL.rows; k++)
+            {
+                if(i != k)
+                {
+                    loss += (b.y.data[k][j] - p.data[k][j]);
+                    loss *= p.data[k][j]*p.data[i][j];
+                }
+                if(i == k)
+                {
+                    loss += (b.y.data[i][j] - p.data[i][j]);
+                    loss *= p.data[i][j]*(1 - p.data[i][j]);
+                }
+            }
+
+            // Finally set up the dl MATRIX
+            dL.data[i][j] = loss;
+            
+        }
+    }
+    return dL; 
+}
+    // Incase of softmax and cross entropy loss dL becomes this
+    // matrix dL = axpy_matrix(-1, p, b.y); // partial derivative of loss dL/dy
+    // ALso the gradient everywhere else becomes 1 
+
+matrix Last_Layer_Loss_Cross_Entropy(data b, matrix p)
+{
+    matrix dL = axpy(-1, b.y, p);
+    return dL;
+}
+
 
 // Train a model on a dataset using SGD
 // model m: model to train
@@ -392,44 +435,17 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
         matrix p = forward_model(m, b.X);
         // fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
         fprintf(stderr, "%06d: Loss: %f\n", e, mean_squared_loss(b.y, p));
+
+
         // fprintf(stderr, "%06d: Loss: %f\n", e, mean_absolute_loss(b.y, p))
 
-        // Incase of softmax and cross entropy loss dL becomes this
-        // matrix dL = axpy_matrix(-1, p, b.y); // partial derivative of loss dL/dy
 
-        // IN other cases: 
-        // The last layer is represented as m.(layers + m.n)
-        // In case of mean_squared_error
-        matrix dL = make_matrix(p.rows, p.cols);
-        int i, j, k;
-        double loss;
-        for(i = 0; i < dL.rows; i++)
-        {
-            loss = 0;
-            for(j = 0; j < dL.cols; j++)
-            {
-                for(k = 0; k < dL.rows; k++)
-                {
-                    if(i != k)
-                    {
-                        loss += (b.y.data[k][j] - p.data[k][j]);
-                        loss *= p.data[k][j]*p.data[i][j];
-                    }
-                    if(i == k)
-                    {
-                        loss += (b.y.data[i][j] - p.data[i][j]);
-                        loss *= p.data[i][j]*(1 - p.data[i][j]);
-                    }
-                }
+        // fOR CROSS ENTROPY LOSS
+        // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
 
-                // Finally set up the dl MATRIX
-                dL.data[i][j] = loss;
-                
-            }
-        }
+        // fOR MEAN SQUARED ERROR 
+        matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
 
-
-        // matrix dL = axpy_matrix()
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
         free_matrix(dL);
