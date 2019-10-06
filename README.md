@@ -71,6 +71,7 @@ Check `matrix forward_layer(layer *l, matrix in)`.
 
 Using matrix operations we can batch-process data. Each row in the input `in` is a separate data point and each row in the returned matrix is the result of passing that data point through the layer.
 
+
 ### Backward propagation ###
 
 Back Propogation is the most difficult to see through for me but as I implemented all the things became clear.
@@ -122,6 +123,43 @@ Calculate the current weight change as a weighted sum of `l->dw`, `l->w`, and `l
 
 Finally, apply the weight change to your weights by adding a scaled amount of the change based on the learning rate.
 
+### Loss Function ###
+
+Now since you have learned how to backpropogate the error. The main task still remains and that is to calculate the error at the last layer so we can propogate it in the first place. For that the way to do so is to find out the error using a error function. 
+
+I have implemented two error functions:
+1. Cross Entropy Loss : 
+Calculates the cross-entropy loss for the ground-truth labels y and our predictions p. Cross-entropy loss is just negative log-likelihood (we discussed log-likelihood in class for logistic regression) for multi-class classification. Since we added the negative sign it becomes a loss function that we want to minimize. Cross-entropy loss is given by:
+
+L = Σ(-y_i log(p_i))
+for a single data point, summing across the different classes. Cross-entropy loss is nice to use with our softmax activation because the partial derivatives are nice. If the output of our final layer uses a softmax: y = σ(wx) then:
+dL/d(wx) = (y - truth)
+See why f'(wx) becomes 1 [Softmax with Cross Entropy Loss](https://math.stackexchange.com/questions/945871/derivative-of-softmax-loss-function?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa).
+
+During training, we'll just calculate dL/dy as (y - truth) and set the gradient of the softmax to be 1 everywhere to have the same effect, as discussed earlier. This avoids numerical instability with calculating the "true" dL/dy and dσ(x)/dx for cross-entropy loss and the softmax function independently and multiplying them together.
+
+See `matrix Last_Layer_Loss_Cross_Entropy(data b, matrix p)` for dL/dy implementation.
+
+2. Mean-squared Error
+Calculates the mean squared error between the ground truth y and our predictions p. MSE is a loss most of you would be familiar with but for the notion of describing everything I am writing once more here.
+```
+MSE =  (1/n)Σ(y - (p_i))^2
+```
+Here n denotes number of rows in a matrix or distinct data points.
+Now the question remains to use cross-entropy loss with MSE. 
+Lets do that : 
+So assume that in the first forward feed you have adjusted all your hidden layer outputs based on the fact that each neuron output will be f(wx). And now you want to back-propogate the error.
+
+I have calculated the Backrop-Error dL/dy here in this picture. Please have a look.
+
+![MSE with Cross Entropy Loss 1](ReadmeData/MSE_with_cross_entropy_loss1.png)
+![MSE with Cross Entropy Loss 2](ReadmeData/MSE_with_cross_entropy_loss2.png)
+
+Now since you got the maths behind writing the Gradient of MSE with respect to the output of the softmax output.
+Lets see the function in action.
+See `matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)` in `src/classifier.c` for implementation.
+
+
 ## Creating and learning a Model
 
 ### Creating a New Layer
@@ -147,7 +185,7 @@ Now this function does is call the forward_layer function for all the layers in 
 `X = foward_layer(m.(layers+i), X)` sets X that is the input matrix to the output matrix at each layer.
 
 ### Running the model Backward
-Once the weights are all set, we have to backpropogate the error through the model. Check line 273 in the `src/classifier.c` for more information on the above method. We send the matrix Loss_D (which represnts loss of each layer) in backward sense throgh the `backward_layer(layer* working_layer, matrix Loss_D)` .
+Once a foward pass is completed, we have to backpropogate the error through the model. Check line 273 in the `src/classifier.c` for more information on the above method. We send the matrix Loss_D (which represents loss of each layer) in backward sense through the `backward_layer(layer* working_layer, matrix Loss_D)` .
 
 
 ### Training the Model
@@ -159,7 +197,7 @@ Now lets see what this function do.
 3. Do a forward_propagation taking in (model, batch.X)
 4. Calculate the cross entropy loss for the last layer.
 5. Calculate the loss matrix and backpropogate it through the model.
-6. Update the model weight through ` update_model(m, rate/batch, momentum, decay);`. See for SGD the rate changes to rate/batchsize.
+6. Update the model weight through ` update_model(m, rate/batch, momentum, decay)`. See for SGD the rate changes to rate/batchsize.
 
 ## MUST READ
 *After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self.* 
@@ -201,6 +239,7 @@ We have to do a similar process as last time, getting the data and creating file
     find cifar/train -name \*.png > cifar.train
     find cifar/test -name \*.png > cifar.test
 ```
+
 
 ## Further Developments
 Since fo now each layer is connected to the next layer in a fully connected way. I want to implement some other layers also like Convolution Layer, Max Pooling Layer, Dropout Layer etc.
