@@ -414,7 +414,7 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
 
 matrix Last_Layer_Loss_Cross_Entropy(data b, matrix p)
 {
-    matrix dL = axpy(-1, b.y, p);
+    matrix dL = axpy_matrix(-1, b.y, p);
     return dL;
 }
 
