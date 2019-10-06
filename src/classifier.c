@@ -385,12 +385,12 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
    matrix dL = make_matrix(p.rows, p.cols);
     int i, j, k;
     double loss;
-    for(i = 0; i < dL.rows; i++)
+    for(k = 0; k < dL.rows; k++)
     {
         loss = 0;
-        for(j = 0; j < dL.cols; j++)
+        for(i = 0; i < dL.rows; i++)
         {
-            for(k = 0; k < dL.rows; k++)
+            for(j = 0; j < dL.cols; j++)
             {
                 if(i != k)
                 {
@@ -400,11 +400,14 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
                 {
                     loss -= (b.y.data[i][j] - p.data[i][j])*(p.data[i][j]*(1 - p.data[i][j]));
                 }
+
+                dL.data[i][j] = loss;
             }
+
             
         }
         // Finally set up the dl MATRIX
-        dL.data[i][j] = loss;
+        
 
     }
     return dL; 

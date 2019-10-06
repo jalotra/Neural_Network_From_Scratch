@@ -183,6 +183,7 @@ double box_muller_normal_random(double m, double s)   /* normal random variate g
 matrix normal_random_matrix(int rows, int cols, double m, double s)
 {
     matrix mat = make_matrix(rows, cols);
+    
     int i, j;
     for(i = 0; i < rows; ++i){
         for(j = 0; j < cols; ++j){
