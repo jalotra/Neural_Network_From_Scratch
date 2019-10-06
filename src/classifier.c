@@ -248,7 +248,7 @@ layer make_layer(int input, int output, ACTIVATION activation)
     layer l;
     l.in  = make_matrix(1,1);
     l.out = make_matrix(1,1);
-    l.w = random_matrix(input, output, 0.54789);
+    l.w = random_matrix(input, output, 0.43265);
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
