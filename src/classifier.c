@@ -248,7 +248,7 @@ layer make_layer(int input, int output, ACTIVATION activation)
     layer l;
     l.in  = make_matrix(1,1);
     l.out = make_matrix(1,1);
-    l.w = random_matrix(input, output, 0.43265);
+    l.w = random_matrix(input, output, sqrt(2/input));
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
@@ -439,10 +439,10 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
 
         // fOR CROSS ENTROPY LOSS
-        // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
+        matrix dL = Last_Layer_Loss_Cross_Entropy(b, p);
 
         // fOR MEAN SQUARED ERROR 
-        matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
+        // matrix dL = Last_Layer_Loss_Mean_Squared(b, p);
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
