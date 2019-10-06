@@ -52,10 +52,10 @@ def neural_on_mnist_dataset():
 
 	print("training model...")
 	batch = 128
-	iters = 3000
+	iters = 1000
 	rate = .01
 	momentum = .9
-	decay = .0005
+	decay = .001
 
 	m = neural_net(train.X.cols, train.y.cols)            
 	# print(train.X.cols, train.y.cols)						# 785, 10
