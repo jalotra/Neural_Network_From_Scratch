@@ -39,7 +39,7 @@ def neural_on_mnist_dataset():
 
 	print("training model...")
 	batch = 128
-	iters = 3000
+	iters = 1000
 	rate = .01
 	momentum = .9
 	decay = .0005
