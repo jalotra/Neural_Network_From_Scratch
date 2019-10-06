@@ -401,7 +401,7 @@ matrix Last_Layer_Loss_Mean_Squared(data b, matrix p)
             
         }
         // Finally set up the dl MATRIX
-        dL.data[i][j] = loss;
+        dL.data[i][j] = -loss;
 
     }
     return dL; 
