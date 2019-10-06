@@ -247,7 +247,17 @@ layer make_layer(int input, int output, ACTIVATION activation)
     layer l;
     l.in  = make_matrix(1,1);
     l.out = make_matrix(1,1);
+    //Weight Initialisation Case 1
+    // Randomly Distributed
+    // Works good with cross entropy
     l.w   = random_matrix(input, output, sqrt(2./input));
+
+    // Weight Initialisation Type 2 
+    // Normal Random
+    // m - > mean
+    // s - > std
+    // Works good with MSE
+    l.w = normal_random_matrix(int rows, int cols, 0.1, 1)
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
