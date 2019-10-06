@@ -4,7 +4,7 @@ Wiki says that a neural network is a network or circuit of neurons, or in a mode
 
 Look at this picture. 
 
-<center> ![Neural Network](ReadmeData/Neural_Network_Example.png) </center>
+![Neural Network](ReadmeData/Neural_Network_Example.png) 
 
 
 ## Why this?
