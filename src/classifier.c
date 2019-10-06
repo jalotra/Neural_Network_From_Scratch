@@ -535,7 +535,7 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
         data b = random_batch(d, batch);
         matrix p = forward_model(m, b.X);
         // fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
-        fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p)); 
+        printf("%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p)); 
 
 
         // fprintf(stderr, "%06d: Loss: %f\n", e, mean_squared_loss(b.y, p));
