@@ -345,6 +345,36 @@ double cross_entropy_loss(matrix y, matrix p)
     return sum/y.rows;
 }
 
+double mean_squared_loss(matrix y, matrix p)
+{
+    int i,j;
+    double sum = 0;
+    for(i=0; i < y.rows; i++)
+    {
+        for(j = 0; j < y.cols; j++)
+        {
+            sum += 0.5*(y.data[i][j]-p.data[i][j])*(y.data[i][j]- p.data[i][j]);
+        }
+    }
+
+    return sum/y.rows;
+}
+
+double mean_absolute_loss(matrix y, matrix p)
+{
+    double sum = 0;
+    int i, j;
+    for(i = 0; i < y.rows; i++)
+    {
+        for(j = 0; j < y.cols; j++)
+        {
+            sum += abs(y.data[i][j] - p.data[i][j]);
+        }
+    }
+
+    return sum/y.rows;
+}
+
 
 // Train a model on a dataset using SGD
 // model m: model to train
@@ -360,8 +390,46 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
     for(e = 0; e < iters; ++e){
         data b = random_batch(d, batch);
         matrix p = forward_model(m, b.X);
-        fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
-        matrix dL = axpy_matrix(-1, p, b.y); // partial derivative of loss dL/dy
+        // fprintf(stderr, "%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
+        fprintf(stderr, "%06d: Loss: %f\n", e, mean_squared_loss(b.y, p));
+        // fprintf(stderr, "%06d: Loss: %f\n", e, mean_absolute_loss(b.y, p))
+
+        // Incase of softmax and cross entropy loss dL becomes this
+        // matrix dL = axpy_matrix(-1, p, b.y); // partial derivative of loss dL/dy
+
+        // IN other cases: 
+        // The last layer is represented as m.(layers + m.n)
+        // In case of mean_squared_error
+        matrix dL = make_matrix(p.rows, p.cols);
+        int i, j, k;
+        double loss;
+        for(i = 0; i < dL.rows; i++)
+        {
+            loss = 0;
+            for(j = 0; j < dL.cols; j++)
+            {
+                for(k = 0; k < dL.rows; k++)
+                {
+                    if(i != k)
+                    {
+                        loss += (b.y.data[k][j] - p.data[k][j]);
+                        loss *= p.data[k][j]*p.data[i][j];
+                    }
+                    if(i == k)
+                    {
+                        loss += (b.y.data[i][j] - p.data[i][j]);
+                        loss *= p.data[i][j]*(1 - p.data[i][j]);
+                    }
+                }
+
+                // Finally set up the dl MATRIX
+                dL.data[i][j] = loss;
+                
+            }
+        }
+
+
+        // matrix dL = axpy_matrix()
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
         free_matrix(dL);
