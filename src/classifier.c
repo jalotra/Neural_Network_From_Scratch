@@ -249,7 +249,7 @@ layer make_layer(int input, int output, ACTIVATION activation)
     l.in  = make_matrix(1,1);
     l.out = make_matrix(1,1);
     // Originally 
-    l.w = random_matrix(input, output, -sqrt(2/input))
+    l.w = random_matrix(input, output, -sqrt(2/input));
     // l.w =  normal_random_matrix(input, output, 0.5, 1);
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
