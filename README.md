@@ -171,7 +171,11 @@ As you can see in line 245 `src/classifier.c`.
 
 * We initialize the `l->in` matrix and `l->out` with one neuron.
 
-* We do the weight initialization quite effectively. There a few methods to do so. One is known as Xavier Initialization. See it here [Xavier Initialization](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf), here I initialize the weights as a random matrix of size `input*output` with values that lie in the range `(-sqrt(2/input), sqrt(2/input))`. And this works pretty well
+* We do the weight initialization quite effectively. 
+1. There a few methods to do so. One is known as Xavier Initialization. See it here [Xavier Initialization]
+(http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf), here I initialize the weights as a random matrix of size `input*output` with values that lie in the range `(-sqrt(2/input), sqrt(2/input))`. And this works pretty well.
+
+2. I have also implemented normal distribution with some mean `m` and variance `s`. Check line 116 for `matrix normal_random_matrix(int rows, int cols, double m, double s)` and it works on `box-muller` algorithm. Check wiki for that. 
 
 * We create the past weights updates as l->v, current weight updates l->dw of same dimensions as that of l->w.
 
