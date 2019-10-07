@@ -250,14 +250,14 @@ layer make_layer(int input, int output, ACTIVATION activation)
     //Weight Initialisation Case 1
     // Randomly Distributed
     // Works good with cross entropy
-    // l.w   = random_matrix(input, output, sqrt(2./input));
+    l.w   = random_matrix(input, output, sqrt(2./input));
 
     // Weight Initialisation Type 2 
     // Normal Random
     // m - > mean
     // s - > std
     // Works good with MSE
-    l.w = normal_random_matrix(input, output, 0.1, 1);
+    //l.w = normal_random_matrix(input, output, 0.1, 10);
     l.v   = make_matrix(input, output);
     l.dw  = make_matrix(input, output);
     l.activation = activation;
@@ -437,12 +437,12 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
         matrix p = forward_model(m, b.X);
 
         // For cross entropy loss with Softmax actiavtion in last layer
-        // printf("%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
-        // matrix dL = Last_Layer_Loss_Cross_Entropy(b, p); // partial derivative of loss dL/dy
+        printf("%06d: Loss: %f\n", e, cross_entropy_loss(b.y, p));
+        matrix dL = Last_Layer_Loss_Cross_Entropy(b, p); // partial derivative of loss dL/dy
 
         // For mean-squared-erro with SOftmax activation in last layer
-        printf("%06d: Loss: %f\n", e, mean_squared_loss(b.y, p));
-        matrix dL = Last_Layer_Loss_Mean_Squared(b, p); // partial derivative of loss dL/dy
+        //printf("%06d: Loss: %6f\n", e, mean_squared_loss(b.y, p));
+        //matrix dL = Last_Layer_Loss_Mean_Squared(b, p); // partial derivative of loss dL/dy
 
         backward_model(m, dL);
         update_model(m, rate/batch, momentum, decay);
