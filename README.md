@@ -254,6 +254,9 @@ Since fo now each layer is connected to the next layer in a fully connected way.
 
 2. If you would like to create custom layers as I have written above. Create a issue and discuss with me as I want this repo to be as clean as possible.
 
+## Credits
+**Joseph Redmon** Whatever I have learnt about neural networks and stitched together here is a result of divine knowledge of Joseph Redmon and his assignment vision-hw4. I have copied most of his code but I have also added some-things myself like the Mse Error. And I thank [Pjreddie]((https://pjreddie.com) for that. 
+
 ## Authors
 **Shivam Jalotra** - (https://github.com/jalotra)
 
