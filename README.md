@@ -204,7 +204,7 @@ Now lets see what this function do.
 6. Update the model weight through ` update_model(m, rate/batch, momentum, decay)`. See for SGD the rate changes to rate/batchsize.
 
 ## MUST READ
-*After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self and also implementing all these functions your self.* 
+*After reading each and every bit of information that I have written here you are equipped with most of information needed to write something similar to this repo. I strongly feel that you should create your own Neural Network in C specially because you will be defining all the matrix methods your-self unlike python where you have numpy for help and also the execution will be slow of your own methods.* 
 
 You don't have to code everything from scratch. I have build this on top of my existing repo. Check the repo [Image_Processing_Starter_Packge](https://github.com/jalotra/Image_Processing_Starter_Package)
 
